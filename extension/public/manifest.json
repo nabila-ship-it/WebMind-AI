@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "WebMind AI — Smart Web Assistant",
+  "version": "1.0.0",
+  "description": "AI Assistant untuk merangkum halaman web, tanya jawab konten, dan menerjemahkan teks langsung di Google Chrome.",
+  "author": "Nabila",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "Buka WebMind AI",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

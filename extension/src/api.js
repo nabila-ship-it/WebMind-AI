@@ -1,6 +1,6 @@
 // API Client and Chrome Communication Helper for WebMind AI
 
-export const DEFAULT_BACKEND_URL = "http://localhost:3000/api/ai";
+export const DEFAULT_BACKEND_URL = "https://web-mind-ai-xi.vercel.app/api/ai";
 
 /**
  * Retrieve backend URL from chrome.storage or localStorage

@@ -136,7 +136,7 @@ Deployment backend ke Vercel memungkinkan ekstensi dapat digunakan dari mana saj
    - **Key**: `GEMINI_MODEL` *(opsional)*
    - **Value**: `gemini-3.5-flash-lite`
 6. Klik tombol **"Deploy"**.
-7. Setelah selesai, Vercel akan memberikan domain aktif (contoh: `https://webmind-ai-backend.vercel.app`).
+7. Setelah selesai, Vercel akan memberikan domain aktif (contoh: `https://web-mind-ai-xi.vercel.app/`).
 8. Buka ekstensi WebMind AI di Chrome, klik ikon **Pengaturan (Gear)** di kanan atas popup, lalu ubah URL Backend menjadi:
    ```text
    https://webmind-ai-backend.vercel.app/api/ai

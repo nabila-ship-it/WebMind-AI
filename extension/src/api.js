@@ -39,6 +39,121 @@ export async function saveBackendUrl(url) {
 }
 
 /**
+ * Retrieve chat history from chrome.storage or localStorage
+ */
+export async function getStoredChatHistory() {
+  try {
+    if (typeof chrome !== "undefined" && chrome.storage?.local) {
+      const data = await chrome.storage.local.get(["webmind_chat_history"]);
+      if (Array.isArray(data.webmind_chat_history)) return data.webmind_chat_history;
+    } else {
+      const stored = localStorage.getItem("webmind_chat_history");
+      if (stored) return JSON.parse(stored);
+    }
+  } catch (e) {
+    console.warn("Gagal membaca riwayat chat:", e);
+  }
+  return [];
+}
+
+/**
+ * Save chat history to chrome.storage or localStorage
+ */
+export async function saveStoredChatHistory(messages) {
+  try {
+    const trimmed = messages.slice(-50);
+    if (typeof chrome !== "undefined" && chrome.storage?.local) {
+      await chrome.storage.local.set({ webmind_chat_history: trimmed });
+    } else {
+      localStorage.setItem("webmind_chat_history", JSON.stringify(trimmed));
+    }
+    return true;
+  } catch (e) {
+    console.error("Gagal menyimpan riwayat chat:", e);
+    return false;
+  }
+}
+
+/**
+ * Clear stored chat history
+ */
+export async function clearStoredChatHistory() {
+  try {
+    if (typeof chrome !== "undefined" && chrome.storage?.local) {
+      await chrome.storage.local.remove(["webmind_chat_history"]);
+    } else {
+      localStorage.removeItem("webmind_chat_history");
+    }
+    return true;
+  } catch (e) {
+    console.error("Gagal menghapus riwayat chat:", e);
+    return false;
+  }
+}
+
+/**
+ * Retrieve global activity log (summaries, translations, Q&A)
+ */
+export async function getStoredActivityLogs() {
+  try {
+    if (typeof chrome !== "undefined" && chrome.storage?.local) {
+      const data = await chrome.storage.local.get(["webmind_activity_logs"]);
+      if (Array.isArray(data.webmind_activity_logs)) return data.webmind_activity_logs;
+    } else {
+      const stored = localStorage.getItem("webmind_activity_logs");
+      if (stored) return JSON.parse(stored);
+    }
+  } catch (e) {
+    console.warn("Gagal membaca log aktivitas:", e);
+  }
+  return [];
+}
+
+/**
+ * Append an activity to global activity log
+ */
+export async function addStoredActivityLog(entry) {
+  try {
+    const current = await getStoredActivityLogs();
+    const updated = [
+      {
+        id: "act_" + Date.now() + "_" + Math.random().toString(36).substr(2, 5),
+        timestamp: new Date().toISOString(),
+        ...entry
+      },
+      ...current
+    ].slice(0, 30);
+
+    if (typeof chrome !== "undefined" && chrome.storage?.local) {
+      await chrome.storage.local.set({ webmind_activity_logs: updated });
+    } else {
+      localStorage.setItem("webmind_activity_logs", JSON.stringify(updated));
+    }
+    return updated;
+  } catch (e) {
+    console.error("Gagal menambahkan log aktivitas:", e);
+    return [];
+  }
+}
+
+/**
+ * Clear all activity logs
+ */
+export async function clearStoredActivityLogs() {
+  try {
+    if (typeof chrome !== "undefined" && chrome.storage?.local) {
+      await chrome.storage.local.remove(["webmind_activity_logs"]);
+    } else {
+      localStorage.removeItem("webmind_activity_logs");
+    }
+    return true;
+  } catch (e) {
+    console.error("Gagal menghapus log aktivitas:", e);
+    return false;
+  }
+}
+
+/**
  * Ping backend health endpoint
  */
 export async function testBackendConnection(baseUrl) {
